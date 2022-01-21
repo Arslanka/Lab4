@@ -1,4 +1,4 @@
-package Stuff;
+package stuff;
 
 public class Shirt implements ThingInterface {
     private final String name = "Рубашка";

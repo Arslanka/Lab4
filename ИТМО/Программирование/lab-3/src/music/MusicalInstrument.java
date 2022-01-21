@@ -1,6 +1,6 @@
-package Music;
+package music;
 
-import Stuff.ThingInterface;
+import stuff.ThingInterface;
 
 public class MusicalInstrument implements ThingInterface {
     private final String name;
@@ -8,6 +8,9 @@ public class MusicalInstrument implements ThingInterface {
     private final InstrumentSize instrumentSize;
 
     public MusicalInstrument(String name, String sound, InstrumentSize instrumentSize) {
+        if (name == null || sound == null || instrumentSize == null) {
+            throw new IllegalArgumentException("Аргумент не может быть null");
+        }
         this.name = name;
         this.sound = sound;
         this.instrumentSize = instrumentSize;

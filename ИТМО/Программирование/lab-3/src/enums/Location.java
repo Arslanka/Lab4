@@ -1,8 +1,10 @@
-package Enums;
+package enums;
 
 public enum Location {
     ZMEEVKA("Змеевка"),
-    PROM("Бал");
+    PROM("Бал"),
+    DANDELION("Одуванчики"),
+    PLATFORM("Площадка");
 
     private final String location;
     Location(String location) {

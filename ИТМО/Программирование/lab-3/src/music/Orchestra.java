@@ -1,6 +1,6 @@
-package Music;
+package music;
 
-import Stuff.ThingInterface;
+import stuff.ThingInterface;
 
 import java.util.*;
 
@@ -8,11 +8,14 @@ public class Orchestra implements ThingInterface {
     private final String name = "Оркестр";
     private final ArrayList<Musician> participants;
     private Set<Musician> uniqueParticipants;
-    private final ArrayList<String> melody = new ArrayList<>();
+    private ArrayList<String> melody = new ArrayList<>();
 
-    public Orchestra(Musician... participants) { //Произвольное число аргументов
+    public Orchestra(Musician... participants) {
+        if (participants == null) {
+            throw new IllegalArgumentException("Аргумент не может быть null");
+        }
         this.participants = new ArrayList<>(Arrays.asList(participants));
-        this.uniqueParticipants = new HashSet<>(this.participants);
+        this.uniqueParticipants = new LinkedHashSet<>(this.participants);
     }
 
     public int getNumberOfParticipants() {
@@ -63,14 +66,13 @@ public class Orchestra implements ThingInterface {
 
     @Override
     public String toString() {
-        ArrayList<Musician> musicians = new ArrayList<>(uniqueParticipants);
-        StringBuilder characteristic = new StringBuilder(getName() + " c " + getNumberOfParticipants() + " Персонажами: ");
-        for (Musician musician : musicians) {
+        String characteristic = getName() + " c " + getNumberOfParticipants() + " Персонажами: ";
+        for (Musician participant : participants) {
             String additional = ", ";
-            if (musician.equals(musicians.get(musicians.size() - 1))) additional = ".";
-            characteristic.append(musician.getName()).append(additional);
+            if (participant.equals(participants.get(participants.size() - 1))) additional = ".";
+            characteristic += participant.getName() + additional;
         }
-        return characteristic.toString();
+        return characteristic;
     }
 
     @Override

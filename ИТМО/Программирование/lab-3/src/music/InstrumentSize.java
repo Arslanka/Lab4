@@ -1,4 +1,4 @@
-package Music;
+package music;
 
 public enum InstrumentSize {
     SMALL("Совсем маленький инструмент, который надо держать на руках"),

@@ -1,12 +1,15 @@
-package Characters;
+package characters;
 
-import Music.*;
+import exceptions.InstrumentNotAllowedForMusicianException;
+import music.InstrumentSize;
+import music.MusicalInstrument;
+import music.Musician;
 
-public class Baby extends Character implements Musician {
-    private final static int HEIGHT_FOR_HUGE_HARP = 160;
+public class Baby extends Human implements Musician {
     private MusicalInstrument musicalInstrument;
     private final int height;
     private boolean stayingOnLadder;
+    public static boolean isMeeting = false;
 
     public Baby(String name, int height, MusicalInstrument musicalInstrument) {
         this(name, height, false, musicalInstrument);
@@ -14,27 +17,24 @@ public class Baby extends Character implements Musician {
 
     public Baby(String name, int height, boolean stayingOnLadder, MusicalInstrument musicalInstrument) {
         super(name);
+        if (musicalInstrument == null) {
+            throw new IllegalArgumentException("Аргумент не может быть null");
+        }
+        if (musicalInstrument.getInstrumentSize() == InstrumentSize.HUGE &&
+                height < Musician.HEIGHT_FOR_HUGE_INSTRUMENT && !stayingOnLadder) {
+            throw new InstrumentNotAllowedForMusicianException(name, height);
+        }
         this.height = height;
         this.stayingOnLadder = stayingOnLadder;
-        if (musicalInstrument.getInstrumentSize() == InstrumentSize.HUGE &&
-                height < HEIGHT_FOR_HUGE_HARP && !stayingOnLadder) {
-            System.out.println("!!! Рост Персонажа " + name + " не позволяет играть на огромном инструменте !!!");
-            System.out.println("!!! Измените инструмент через метод setMusicalInstrument или пододвиньте лестницу с " +
-                    " помощью метода setStayingOnLadder !!!");
-        }
         this.musicalInstrument = musicalInstrument;
+    }
+
+    public static void startMeeting() {
+        isMeeting = true;
     }
 
     @Override
     public String playOnInstrumentAndGetSound() {
-        if (musicalInstrument.getInstrumentSize() == InstrumentSize.HUGE &&
-                height < HEIGHT_FOR_HUGE_HARP && !stayingOnLadder) {
-            System.out.println("!!! Напонимаем, что в данный момент у Персонажа " + this +
-                    " в собственности инструмент, не подходящий ему по размеру !!!");
-            System.out.println("!!! Измените инструмент через метод setMusicalInstrument или пододвиньте лестницу с " +
-                    " помощью метода setStayingOnLadder !!!");
-            return null;
-        }
         System.out.println("Персонаж " + this + " играет на Объекте " + musicalInstrument.getName()
                 + ", который имеет характеристику: " + musicalInstrument.getInstrumentSize().toString() +
                 " и издает звуки: " + musicalInstrument.getSound());
@@ -43,6 +43,16 @@ public class Baby extends Character implements Musician {
 
     public void setStayingOnLadder(boolean stayingOnLadder) {
         this.stayingOnLadder = stayingOnLadder;
+    }
+
+    @Override
+    public boolean isStayingOnLadder() {
+        return stayingOnLadder;
+    }
+
+    @Override
+    public int getHeight() {
+        return height;
     }
 
     @Override
